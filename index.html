@@ -277,6 +277,7 @@ tr:hover td{background:#fafaf8}
   <div class="ni" onclick="nav('stk')"><i class="ti ti-package"></i>Stock & Produits</div>
   <div class="ns">Systeme</div>
   <div class="ni" onclick="nav('prm')"><i class="ti ti-settings"></i>Parametres</div>
+  <div class="ni" onclick="lockApp()" style="color:#a33;margin-top:4px;border-top:1px solid #eee;padding-top:10px"><i class="ti ti-lock" style="color:#a33"></i>Se deconnecter</div>
 </div>
 
 <div id="main">
@@ -2175,6 +2176,24 @@ function validatePin() {
       showError('Code incorrect. ' + (MAX_ATTEMPTS - attempts) + ' essai(s) restant(s).');
       setTimeout(function() { updateDots(); }, 600);
     }
+  }
+}
+
+function lockApp() {
+  if (!confirm('Voulez-vous vous deconnecter ?')) return;
+  sessionStorage.removeItem('mpsr_unlocked');
+  pinEntry = '';
+  updateDots();
+  document.getElementById('pin-error').textContent = '';
+  var ls = document.getElementById('lock-screen');
+  ls.style.display = 'flex';
+  ls.style.opacity = '1';
+  ls.style.transition = 'none';
+  pinMode = 'check';
+  document.getElementById('lock-subtitle').textContent = 'Entrez votre code PIN';
+  // Proposer Face ID si disponible
+  if (window.PublicKeyCredential) {
+    document.getElementById('faceid-btn').style.display = 'flex';
   }
 }
 
